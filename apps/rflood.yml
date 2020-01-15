@@ -13,12 +13,12 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'rflood'
-        intport: '80'
-        extport: '8991'
-        intport2: '5000'
-        extport2: '5001'
-        intport3: '51413'
-        extport3: '51411'
+        intport: '3000'
+        extport: '3001'
+        intport2: '443'
+        extport2: '9444'
+        intport3: '51415-51415'
+        extport3: '51415-51415'
         image: 'romancin/rutorrent-flood:latest'
 
     # CORE (MANDATORY) ############################################################
@@ -67,14 +67,15 @@
           - '/etc/localtime:/etc/localtime:ro'
           - '{{path.stdout}}:{{path.stdout}}'
           - '/mnt:/mnt'
+          - '/mnt/downloads/rutorrent:/downloads'
           - '/opt/appdata/{{pgrole}}:/config'
           - '/opt/appdata/{{pgrole}}/sock:/run/php'
 
     - name: 'Setting PG ENV'
       set_fact:
         pg_env:
-          PUID: '1000'
-          PGID: '1000'
+          PUID: '0'
+          PGID: '0'
 
     - name: 'Install config.php fix'
       template:
