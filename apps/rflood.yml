@@ -17,8 +17,8 @@
         extport: '3001'
         intport2: '443'
         extport2: '9444'
-        intport3: '51415-51415'
-        extport3: '51415-51415'
+        intport3: '51415'
+        extport3: '51415'
         image: 'romancin/rutorrent-flood:latest'
 
     # CORE (MANDATORY) ############################################################
