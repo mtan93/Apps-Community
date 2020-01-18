@@ -1,0 +1,69 @@
+#!/bin/bash
+#
+# Title:      PGBlitz (Reference Title File)
+# Author(s):  Admin9705
+# URL:        https://pgblitz.com - http://github.pgblitz.com
+# GNU:        General Public License v3.0
+################################################################################
+---
+- hosts: localhost
+  gather_facts: false
+  tasks:
+    # FACTS #######################################################################
+    - name: 'Set Known Facts'
+      set_fact:
+        pgrole: 'dbsync'
+        image: 'nowsci/plex-db-sync'
+
+    # CORE (MANDATORY) ############################################################
+    - name: 'Including cron job'
+      include_tasks: '/opt/communityapps/apps/_core.yml'
+
+    # LABELS ######################################################################
+    - name: 'Adding Traefik'
+      set_fact:
+        pg_labels:
+          author: 'AUO'
+
+    - name: 'Setting PG Volumes'
+      set_fact:
+        pg_volumes:
+          - '/etc/localtime:/etc/localtime:ro'
+          - '/opt/appdata/{{pgrole}}:/config'
+          - './plex-db-sync/sshkey:/sshkey'
+          - '/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/:/mnt/DB2'
+
+    - name: 'Setting PG ENV'
+      set_fact:
+        pg_env:
+          PUID: '1000'
+          PGID: '1000'
+          S1_SSH_KEY: '/sshkey'
+          S1_SSH_USER: 'root'
+          S1_SSH_HOST: 'yourhost'
+          S1_SSH_PORT: '22'
+          S1_SSH_PATH '/opt/appdata/plex/database/Library/Application Support/Plex Media Server/Plug-in Support/Databases/'
+          S1_START: 'ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname cd /docker; docker-compose up -d plex'
+          S1_STOP: 'ssh -oStrictHostKeyChecking=no -i /sshkey root@hostname cd /docker; docker-compose stop plex'
+          S2_DB_PATH: '/mnt/DB2'
+          S2_START: 'cd /docker; docker container start plex'
+          S2_STOP: 'cd /docker; docker container stop plex'
+          CRON: '0 4 * * *'
+
+    # MAIN DEPLOYMENT #############################################################
+    - name: 'Deploying {{pgrole}}'
+      docker_container:
+        name: '{{pgrole}}'
+        image: '{{image}}'
+        pull: yes
+        published_ports:
+          - '{{ports.stdout}}{{extport}}:{{intport}}'
+        volumes: '{{pg_volumes}}'
+        env: '{{pg_env}}'
+        restart_policy: always
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
+        state: stopped
+        labels: '{{pg_labels}}'
