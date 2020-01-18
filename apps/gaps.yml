@@ -15,7 +15,7 @@
         pgrole: 'gaps'
         intport: '8484'
         extport: '8484'
-        image: 'housewrecker/gaps'
+        image: 'housewrecker/gaps:latest-no-ssl'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
