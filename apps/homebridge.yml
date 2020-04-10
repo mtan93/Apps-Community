@@ -13,6 +13,10 @@
     - name: 'Set Known Facts'
       set_fact:
         pgrole: 'homebridge'
+        intport: '51826'
+        extport: '51826'
+        intport2: '8084'
+        extport2: '8084'
         image: 'oznu/homebridge:latest'
 
     # CORE (MANDATORY) ############################################################
@@ -25,7 +29,7 @@
         pg_labels:
           traefik.frontend.auth.forward.address: '{{gauth}}'
           traefik.enable: 'true'
-          traefik.port: '8080'
+          traefik.port: '{{intport2}}'
           traefik.frontend.rule: 'Host:{{pgrole}}.{{domain.stdout}}{{tldset}}{{cname}}'
           traefik.frontend.headers.SSLHost: '{{domain.stdout}}'
           traefik.frontend.headers.SSLRedirect: 'true'
@@ -52,7 +56,7 @@
           PUID: '1000'
           PGID: '1000'
           HOMEBRIDGE_CONFIG_UI: '1'
-          HOMEBRIDGE_CONFIG_UI_PORT: '8086'
+          HOMEBRIDGE_CONFIG_UI_PORT: '{{intport2}}'
           PACKAGES: 'ffmpeg'
 
     # MAIN DEPLOYMENT #############################################################
@@ -64,6 +68,9 @@
         volumes: '{{pg_volumes}}'
         env: '{{pg_env}}'
         restart_policy: unless-stopped
-        network_mode: host
+        networks:
+          - name: plexguide
+            aliases:
+              - '{{pgrole}}'
         state: started
         labels: '{{pg_labels}}'
