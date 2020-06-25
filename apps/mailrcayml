@@ -15,7 +15,7 @@
         pgrole: 'login'
         intport: '80'
         extport: '8111'
-        image: 'roundcube/roundcubemail:1.4.6-apache'
+        image: 'roundcube/roundcubemail:1.4.x-apache'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
