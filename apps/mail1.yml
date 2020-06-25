@@ -15,7 +15,7 @@
         pgrole: 'webmail'
         intport: '80'
         extport: '8111'
-        image: 'roundcube/roundcubemail'
+        image: 'roundcube/roundcubemail:latest-fpm-alpine'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
