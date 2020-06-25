@@ -12,10 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'monitorr'
+        pgrole: 'webmail'
         intport: '80'
-        extport: '8099'
-        image: 'monitorr/monitorr'
+        extport: '8111'
+        image: 'roundcube/roundcubemail'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
@@ -42,7 +42,7 @@
     - name: 'Setting PG Volumes'
       set_fact:
         pg_volumes:
-          - '/opt/appdata/{{pgrole}}:/app'
+          - '/opt/appdata/{{pgrole}}:/var/roundcube/config/'
           - '/etc/localtime:/etc/localtime:ro'
 
     - name: 'Setting PG ENV'
