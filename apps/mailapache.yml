@@ -12,10 +12,10 @@
     # FACTS #######################################################################
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'webmail'
+        pgrole: 'login'
         intport: '80'
         extport: '8111'
-        image: 'roundcube/roundcubemail:latest-fpm-alpine'
+        image: 'roundcube/roundcubemail:1.4.6-apache'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
