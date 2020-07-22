@@ -24,8 +24,6 @@
       include_tasks: '/opt/communityapps/apps/_core.yml'
 
     # LABELS ######################################################################
-    - name: 'Adding Traefik'
-      set_fact:
 
     - name: 'Setting PG Volumes'
       set_fact:
@@ -54,7 +52,7 @@
         restart_policy: unless-stopped
         dns_servers:
           - 1.1.1.1
-          - 84.200.69.80
+          - 8.8.8.8
           - 45.33.97.5
           - 208.67.222.222
         networks:
@@ -63,7 +61,3 @@
               - '{{pgrole}}'
         state: started
         labels: '{{pg_labels}}'
-    - name: 'Stopping {{pgrole}}. Go configure UDP values and XML file.'
-      docker_container:
-        name: '{{pgrole}}'
-        state: stopped
