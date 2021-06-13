@@ -13,10 +13,10 @@
 
     - name: 'Set Known Facts'
       set_fact:
-        pgrole: 'sonarr4k'
-        intport: '8989'
+        pgrole: 'sonarranime'
+        intport: '8912'
         extport: '8984'
-        image: 'lsiodev/sonarr-preview'
+        image: 'linuxserver/sonarr:latest'
 
     # CORE (MANDATORY) ############################################################
     - name: 'Including cron job'
